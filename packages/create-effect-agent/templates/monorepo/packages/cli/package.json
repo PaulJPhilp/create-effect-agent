@@ -1,0 +1,29 @@
+{
+    "name": "@my-project/cli",
+    "version": "1.0.0",
+    "description": "CLI for {{projectName}}",
+    "type": "module",
+    "bin": {
+        "{{projectName}}": "./dist/index.js"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "vitest",
+        "lint": "eslint src --ext .ts"
+    },
+    "engines": {
+        "node": ">=20"
+    },
+    "dependencies": {
+        "@{{projectName}}/core": "workspace:*",
+        "commander": "^11.0.0",
+        "effect": "^3.18.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.9.0",
+        "vitest": "^1.0.0"
+    }
+}

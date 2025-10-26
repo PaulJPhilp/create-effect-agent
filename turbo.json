@@ -1,0 +1,22 @@
+{
+    "tasks": {
+        "build": {
+            "outputs": [
+                "dist/**"
+            ],
+            "cache": false
+        },
+        "test": {
+            "outputs": [
+                "coverage/**"
+            ],
+            "cache": false
+        },
+        "lint": {
+            "outputs": []
+        },
+        "format": {
+            "outputs": []
+        }
+    }
+}

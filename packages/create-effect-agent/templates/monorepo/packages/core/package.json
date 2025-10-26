@@ -1,0 +1,24 @@
+{
+    "name": "@{{projectName}}/core",
+    "version": "1.0.0",
+    "description": "Core library for {{projectName}}",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "test": "vitest",
+        "lint": "eslint src --ext .ts"
+    },
+    "engines": {
+        "node": ">=20"
+    },
+    "dependencies": {
+        "effect": "^3.18.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.9.0",
+        "vitest": "^1.0.0"
+    }
+}

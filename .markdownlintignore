@@ -1,0 +1,18 @@
+# Markdown Lint Ignore File
+
+# Disables markdown linting for documentation files
+
+# Documentation files with intentional formatting
+
+docs/
+*.md
+
+# Configuration and summary files
+
+DOCS_UPDATE_COMPLETE.md
+DOCS_SUMMARY.txt
+TEST_FIX_COMPLETE.md
+COMPLETION_CHECKLIST.md
+OPENTUI_DECISION.md
+OPENTUI_EVALUATION.md
+POC_SUMMARY.md
