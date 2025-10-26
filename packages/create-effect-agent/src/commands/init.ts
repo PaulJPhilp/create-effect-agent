@@ -1,9 +1,10 @@
-import { CLIConfig, TUIError, TUIHandler } from 'effect-cli-tui'
+import { TUIError, TUIHandler } from 'effect-cli-tui'
 import * as Effect from 'effect/Effect'
 import {
     ECOSYSTEM_LIBRARIES,
     RESERVED_NAMES
 } from '../constants'
+import type { CLIConfig } from '../types'
 import { ValidateError } from '../types'
 
 export const initProject: Effect.Effect<CLIConfig, ValidateError | TUIError> =

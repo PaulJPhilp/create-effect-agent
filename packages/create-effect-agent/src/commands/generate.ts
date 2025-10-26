@@ -1,5 +1,6 @@
-import { CLIConfig, TUIHandler } from 'effect-cli-tui'
+import { TUIHandler } from 'effect-cli-tui'
 import * as Effect from 'effect/Effect'
+import type { CLIConfig } from '../types'
 import { GeneratedProject, GenerateError } from '../types'
 
 /**

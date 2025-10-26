@@ -1,2 +1,4 @@
 packages:
-  - 'packages/*'
+  - 'packages/create-effect-agent'
+  - '../effect-cli-tui'
+

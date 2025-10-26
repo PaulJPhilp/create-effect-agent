@@ -1,5 +1,23 @@
-import { CLIConfig } from 'effect-cli-tui'
 import * as Data from 'effect/Data'
+
+export type TemplateType = 'basic' | 'cli' | 'monorepo'
+export type Agent = 'claude' | 'gemini' | 'openai'
+export type IDE = 'cursor' | 'vscode' | 'windsurf'
+export type Library =
+    | 'effect-end'
+    | 'effect-mdx'
+    | 'effect-regex'
+
+export interface CLIConfig {
+    projectName: string
+    projectPath: string
+    template: TemplateType
+    agents: Agent[]
+    libraries: Library[]
+    ideRules: IDE[]
+    setupLinting: boolean
+    setupGit: boolean
+}
 
 export interface GeneratedProject {
     name: string
