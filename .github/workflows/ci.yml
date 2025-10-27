@@ -29,7 +29,7 @@ jobs:
       run: node packages/create-effect-agent/dist/index.js generate ./out --yes --no-git
     - name: Install generated project dependencies
       working-directory: ./out
-      run: pnpm install --prod=false
+      run: pnpm install --ignore-workspace
     - name: Typecheck generated project
       working-directory: ./out
       run: pnpm exec tsc -p tsconfig.json --noEmit
