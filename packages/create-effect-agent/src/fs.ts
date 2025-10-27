@@ -60,13 +60,12 @@ export const writeFiles = (basePath: string, files: FileContent): Effect.Effect<
   Effect.gen(function* (_) {
     for (const [relativePath, content] of Object.entries(files)) {
       const fullPath = path.join(basePath, relativePath)
-      const processedContent = substituteTokens(content, { basePath })
 
       yield* _(Effect.tryPromise({
         try: async () => {
           const dir = path.dirname(fullPath)
           await fs.mkdir(dir, { recursive: true })
-          await fs.writeFile(fullPath, processedContent, 'utf-8')
+          await fs.writeFile(fullPath, content, 'utf-8')
         },
         catch: (err) => new FileError(
           `Failed to write file ${fullPath}: ${err instanceof Error ? err.message : String(err)}`
@@ -74,17 +73,3 @@ export const writeFiles = (basePath: string, files: FileContent): Effect.Effect<
       }))
     }
   })
-
-/**
- * Substitute tokens in content
- */
-const substituteTokens = (content: string, variables: Record<string, string>): string => {
-  let result = content
-
-  for (const [key, value] of Object.entries(variables)) {
-    const placeholder = `{{${key}}}`
-    result = result.replace(new RegExp(placeholder, 'g'), value)
-  }
-
-  return result
-}

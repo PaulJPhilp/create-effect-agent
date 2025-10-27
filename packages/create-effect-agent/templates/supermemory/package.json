@@ -1,0 +1,26 @@
+{
+    "name": "{{projectName}}",
+    "version": "0.0.1",
+    "description": "An agentic Effect project",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc --watch",
+        "test": "vitest",
+        "lint": "eslint src --ext .ts",
+        "format": "prettier --write src"
+    },
+    "engines": {
+        "node": ">=20"
+    },
+    "dependencies": {
+        "effect": "^3.18.0",
+        "effect-supermemory": "^0.2.5"
+      },
+    "devDependencies": {
+        "@types/node": "^20.0.0",
+        "typescript": "^5.9.0",
+        "vitest": "^1.0.0"
+    }
+}

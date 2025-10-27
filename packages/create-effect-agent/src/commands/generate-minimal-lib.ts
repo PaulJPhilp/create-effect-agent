@@ -64,8 +64,135 @@ export const generateMinimalLib = (
             )))
         }
 
-        // Create directory if it doesn't exist
-        yield* _(createDirectory(targetPath))
+import * as Effect from 'effect/Effect'
+import type { GenerateConfig } from '../types'
+import { FileError } from '../types.js'
+
+export const generateMinimalLib = (
+    config: GenerateConfig
+): Effect.Effect<Record<string, string>, FileError> =>
+    Effect.gen(function* (_) {
+        const projectName = config.name || 'my-effect-lib'
+
+        // package.json
+        const packageJson = {
+            name: projectName,
+            version: '0.0.1',
+            description: 'A minimal Effect-TS library',
+            type: 'module',
+            main: 'dist/index.js',
+            types: 'dist/index.d.ts',
+            exports: {
+                '.': {
+                    types: './dist/index.d.ts',
+                    import: './dist/index.js'
+                }
+            },
+            scripts: {
+                build: 'tsc -p tsconfig.build.json',
+                typecheck: 'tsc --noEmit',
+                test: 'vitest run',
+                format: 'prettier --write src'
+            },
+            files: ['dist'],
+            engines: {
+                node: '>=18.18'
+            },
+            keywords: ['effect', 'typescript', 'functional-programming'],
+            author: '',
+            license: 'MIT',
+            dependencies: {
+                effect: '^3.18.0'
+            },
+            devDependencies: {
+                '@types/node': '^20.0.0',
+                typescript: '^5.9.0',
+                vitest: '^1.0.0',
+                prettier: '^3.0.0'
+            }
+        }
+
+        // tsconfig.json (dev config)
+        const tsconfigJson = {
+            compilerOptions: {
+                target: 'ES2022',
+                module: 'ESNext',
+                moduleResolution: 'bundler',
+                declaration: false,
+                outDir: './dist',
+                removeComments: true,
+                strict: true,
+                noImplicitReturns: true,
+                noImplicitOverride: true,
+                noUnusedLocals: true,
+                noUnusedParameters: true,
+                exactOptionalPropertyTypes: true,
+                noImplicitAny: true,
+                noImplicitThis: true,
+                alwaysStrict: true,
+                skipLibCheck: true,
+                esModuleInterop: true,
+                allowSyntheticDefaultImports: true,
+                forceConsistentCasingInFileNames: true,
+                resolveJsonModule: true,
+                isolatedModules: true,
+                verbatimModuleSyntax: true,
+                types: ['vitest/globals']
+            },
+            include: ['src/**/*', 'test/**/*'],
+            exclude: ['node_modules', 'dist']
+        }
+
+        // tsconfig.build.json
+        const tsconfigBuildJson = {
+            extends: './tsconfig.json',
+            compilerOptions: {
+                declaration: true,
+                declarationMap: true,
+                outDir: './dist',
+                removeComments: false,
+                sourceMap: true
+            },
+            include: ['src/**/*'],
+            exclude: ['node_modules', 'dist', 'test/**/*']
+        }
+
+        // Create src directory and index.ts
+        const indexTs = `import * as Effect from 'effect/Effect'\n\n/**\n * Example Effect function\n */\nexport const greet = (name: string): Effect.Effect<string> =>\n  Effect.sync(() => `Hello, ${name}! Welcome to ${projectName}.`)\n\n/**\n * Example program using the greet function\n */\nexport const main: Effect.Effect<void> = Effect.gen(function* (_) {\n  const message = yield* _(greet('${projectName}'))\n  console.log(message)\n})\n`
+
+        // Create test directory and index.test.ts
+        const indexTestTs = `import { describe, it, expect } from 'vitest'\nimport * as Effect from 'effect/Effect'\nimport { greet } from '../src/index'\n\ndescribe('${projectName}', () => {\n  it('should greet correctly', () => {\n    const result = Effect.runSync(greet('World'))\n    expect(result).toBe('Hello, World! Welcome to ${projectName}.')\n  })\n\n  it('should handle Effect execution', () => {\n    expect(() => Effect.runSync(greet('Test'))).not.toThrow()\n  })\n})\n`
+
+        // vitest.config.ts
+        const vitestConfigTs = `/// <reference types="vitest" />\nimport { defineConfig } from 'vitest/config'\n\nexport default defineConfig({
+  test: {
+    environment: 'node',
+    globals: true
+  }
+})\n`
+
+        // README.md
+        const readmeMd = `# ${projectName}\n\nA minimal Effect-TS library.\n\n## Installation\n\n```bash\nnpm install ${projectName}\n# or\npnpm add ${projectName}\n# or\nyarn add ${projectName}\n```\n\n## Usage\n\n```typescript\nimport { greet, main, Effect } from '${projectName}'\n\n// Run the example program\nEffect.runSync(main)\n\n// Or use the greet function\nconst result = Effect.runSync(greet('World'))\nconsole.log(result) // "Hello, World! Welcome to ${projectName}."\n```\n\n## Development\n\n```bash\n# Install dependencies\npnpm install\n\n# Run tests\npnpm test\n\n# Build the library\npnpm build\n\n# Type check\npnpm typecheck\n\n# Format code\npnpm format\n```\n\n## Compatibility\n\nThis library is compatible with [effect-supermemory](https://github.com/your-repo/effect-supermemory).\n`
+
+        // .gitignore
+        const gitignore = `node_modules/\ndist/\n*.log\n.DS_Store\n.env\n.env.local\ncoverage/\n.vscode/settings.json\n.idea/\n`
+
+        // .editorconfig
+        const editorconfig = `root = true\n\n[*]\ncharset = utf-8\nend_of_line = lf\nindent_style = space\nindent_size = 2\ninsert_final_newline = true\ntrim_trailing_whitespace = true\n\n[*.md]\ntrim_trailing_whitespace = false\n`
+
+        return {
+            'package.json': JSON.stringify(packageJson, null, 4),
+            'tsconfig.json': JSON.stringify(tsconfigJson, null, 4),
+            'tsconfig.build.json': JSON.stringify(tsconfigBuildJson, null, 4),
+            'src/index.ts': indexTs,
+            'test/index.test.ts': indexTestTs,
+            'vitest.config.ts': vitestConfigTs,
+            'README.md': readmeMd,
+            '.gitignore': gitignore,
+            '.editorconfig': editorconfig
+        }
+    })
+
 
         // Generate files
         console.log(`Creating minimal Effect library '${projectName}' at ${config.path}...`)

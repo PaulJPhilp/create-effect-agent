@@ -1,6 +1,6 @@
 import * as Data from 'effect/Data'
 
-export type TemplateType = 'basic' | 'cli' | 'monorepo'
+export type TemplateType = 'basic' | 'cli' | 'monorepo' | 'supermemory'
 export type Agent = 'claude' | 'gemini' | 'openai'
 export type IDE = 'cursor' | 'vscode' | 'windsurf'
 export type Library =
@@ -29,14 +29,7 @@ export interface GenerateConfig {
     name?: string
     yes: boolean
     noGit: boolean
-}
-
-export interface FullConfig extends GenerateConfig {
-    packageManager: PackageManager
-    template: 'basic'
-    ruleFormats: RuleFormat[]
-    typeScriptPack: TypeScriptPack
-    effectPack: EffectPack
+    template?: string
 }
 
 export interface GeneratedProject {

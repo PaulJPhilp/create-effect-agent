@@ -106,25 +106,6 @@ async function recursiveCopy(src: string, dest: string): Promise<void> {
 }
 
 /**
- * Write content to a file
- */
-export const writeFile = (
-    filePath: string,
-    content: string
-): Effect.Effect<void, FileError> =>
-    Effect.tryPromise({
-        try: async () => {
-            const dir = path.dirname(filePath)
-            await fs.mkdir(dir, { recursive: true })
-            await fs.writeFile(filePath, content, 'utf-8')
-        },
-        catch: (err) =>
-            new FileError(
-                `Failed to write file ${filePath}: ${err instanceof Error ? err.message : String(err)}`
-            )
-    })
-
-/**
  * Read file content as string
  */
 export const readFile = (
