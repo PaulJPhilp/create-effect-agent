@@ -48,7 +48,7 @@ jobs:
         echo "--- test logs ---" >> logs.txt
         tail -n 100 .turbo/turbo-test.log >> logs.txt
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ci-artifacts-${{ matrix.node-version }}
         path: |
