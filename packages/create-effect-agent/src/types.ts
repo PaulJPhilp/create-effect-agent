@@ -19,6 +19,26 @@ export interface CLIConfig {
     setupGit: boolean
 }
 
+export type PackageManager = 'npm' | 'pnpm' | 'bun'
+export type RuleFormat = 'Cursor' | 'VS Code' | 'Windsurf' | 'Claude' | 'OpenAI' | 'Gemini' | 'Agents.md'
+export type TypeScriptPack = 'back-end' | 'front-end' | 'none'
+export type EffectPack = 'Junior' | 'Intermediate' | 'Senior' | 'none'
+
+export interface GenerateConfig {
+    path: string
+    name?: string
+    yes: boolean
+    noGit: boolean
+}
+
+export interface FullConfig extends GenerateConfig {
+    packageManager: PackageManager
+    template: 'basic'
+    ruleFormats: RuleFormat[]
+    typeScriptPack: TypeScriptPack
+    effectPack: EffectPack
+}
+
 export interface GeneratedProject {
     name: string
     path: string
@@ -44,6 +64,8 @@ export interface Template {
     files: TemplateFile[]
     variables: Record<string, VariableDefinition>
 }
+
+export type FileContent = Record<string, string>
 
 // Error types
 export class InitError extends Data.TaggedError('InitError') {

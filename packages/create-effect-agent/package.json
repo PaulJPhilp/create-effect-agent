@@ -4,7 +4,7 @@
     "description": "CLI tool to bootstrap agentic Effect projects",
     "type": "module",
     "bin": {
-        "create-effect-agent": "./dist/index.js"
+    "create-effect-agent": "./bin/create-effect-agent"
     },
     "main": "dist/index.js",
     "types": "dist/index.d.ts",

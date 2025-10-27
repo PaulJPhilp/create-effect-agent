@@ -24,8 +24,9 @@ A CLI tool that automates the setup of Effect-TS projects optimized for agentic 
 - [x] IDE and agent rule files (Cursor, VS Code, Windsurf)
 - [x] Entry point using Effect CLI exclusively
 - [x] Init workflow complete with validation
-- [ ] **Generate workflow implementation** — Create actual project files on disk
-- [ ] **End-to-end workflow testing** — Full user journey tests
+- [x] **Generate workflow implementation** — Create actual project files on disk
+- [x] **Minimal Effect library template** — Working generate command with E2E validation
+- [ ] **End-to-end workflow testing** — Full user journey tests (legacy init+generate)
 - [ ] **Build and test validation** — Verify generated projects build and test correctly
 - [ ] **Linting and formatting** — Ultracite integration for generated projects
 
@@ -114,19 +115,45 @@ create-effect-agent/                     # Monorepo root
 
 ## Quick Start
 
-### For End Users (Coming Soon)
+### For End Users
 
 Once published to npm, create projects with:
 
+#### Generate Command (New - MVP)
+
+Create a minimal Effect library project directly:
+
 ```bash
-# Create a new basic Effect project
-npm init effect-agent my-effect-app
+# Interactive mode (coming soon)
+npm init effect-agent
 
-# Create a CLI tool
-npm init effect-agent my-cli-tool --template cli
+# Direct generation mode (MVP)
+npx create-effect-agent generate ./my-effect-lib --name my-effect-lib --yes
+npx create-effect-agent generate ./my-effect-lib --name my-effect-lib --yes --no-git
+```
 
-# Create a monorepo
-npm init effect-agent my-monorepo --template monorepo
+## CI Validation
+
+This project is continuously validated via GitHub Actions. The CI workflow, defined in `.github/workflows/ci.yml`, runs a minimal end-to-end test across a matrix of Node.js versions (18, 20, 22) on `ubuntu-latest`.
+
+The validation process for each Node version includes:
+
+1.  **Project Generation**: A new project is generated using the `generate` command with default options (`--yes` and `--no-git`).
+2.  **Dependency Installation**: `pnpm install` is run inside the new project.
+3.  **Type Checking**: The generated code is type-checked with `pnpm exec tsc -p tsconfig.json --noEmit`.
+4.  **Build**: The project is built using `pnpm build`.
+5.  **Testing**: Tests are run with `pnpm exec vitest run`.
+
+This ensures that the generated project is buildable, passes type checks, and has a working test suite out of the box on all supported Node.js versions.
+
+
+#### Legacy Init Command
+
+The original interactive workflow:
+
+```bash
+# Interactive project creation (basic, CLI, monorepo templates)
+npm init effect-agent
 ```
 
 The interactive CLI will guide you through:
@@ -210,7 +237,40 @@ Guided prompts using @inquirer/prompts for intuitive setup:
 
 ### 2. Pre-Built Project Templates
 
-Three production-ready templates included:
+#### Minimal Effect Library (Generate Command - MVP)
+Production-ready Effect library with TypeScript, Vitest, and build tooling.
+
+```bash
+npx create-effect-agent generate ./my-lib --name my-lib --yes
+```
+
+Generated structure:
+```
+my-lib/
+├── src/index.ts          # Effect functions and exports
+├── test/index.test.ts    # Vitest tests
+├── package.json          # ESM exports, build scripts
+├── tsconfig.json         # Strict TypeScript config
+├── tsconfig.build.json   # Build configuration
+├── vitest.config.ts      # Test configuration
+├── README.md             # Usage documentation
+├── .gitignore           # Git ignore patterns
+├── .editorconfig        # Editor configuration
+└── dist/                # Built output (.js + .d.ts + .map)
+```
+
+**Features:**
+- ✅ TypeScript 5.9 strict mode
+- ✅ Effect 3.18 runtime
+- ✅ Vitest testing framework
+- ✅ ESM exports with dual package support
+- ✅ Source maps and declarations
+- ✅ Prettier formatting
+- ✅ Compatible with effect-supermemory
+
+#### Legacy Templates (Init Command)
+
+Three interactive templates for different use cases:
 
 #### Basic Template
 Minimal Effect project for learning and experimentation.
@@ -491,18 +551,16 @@ Comprehensive documentation for understanding and contributing:
 - [x] Type definitions and error handling
 - [x] Project name validation
 
-#### In Progress 🚧
+#### Completed ✅
 
 1. **Generate Workflow Implementation** *(Priority: HIGH)*
-   - [ ] Validate project path doesn't exist
-   - [ ] Create directory structure
-   - [ ] Apply template files with variable substitution
-   - [ ] Copy IDE rule files
-   - [ ] Copy agent guidance files
-   - [ ] Add ecosystem library dependencies to package.json
-   - [ ] Create .gitignore from template
-   - [ ] Implementation: `packages/create-effect-agent/src/commands/generate.ts`
-   - Related utilities: `src/utils/{file.ts, template.ts, git.ts}`
+   - [x] Validate project path doesn't exist
+   - [x] Create directory structure
+   - [x] Apply minimal-effect-lib template with variable substitution
+   - [x] Generate all required files (package.json, tsconfig, src, tests, etc.)
+   - [x] Optional git initialization
+   - [x] E2E validation (build, test, typecheck)
+   - [x] Implementation: `packages/create-effect-agent/src/commands/generate-minimal-lib.ts`
 
 2. **File Operation Utilities** *(Priority: HIGH)*
    - [ ] `file.ts` — copyTemplate, createDirectory, writeFile, readTemplate
@@ -616,13 +674,16 @@ Comprehensive documentation for understanding and contributing:
 # Build the package
 pnpm build
 
-# Run locally
+# Generate a minimal Effect library (MVP)
+node packages/create-effect-agent/dist/index.js generate ./my-test-lib --name my-test-lib --yes
+
+# Legacy interactive init
 node packages/create-effect-agent/dist/index.js init my-test-app
 
 # Or for development/debugging
 cd packages/create-effect-agent
 npm run build
-node dist/index.js init my-test-app
+node dist/index.js generate ./my-test-lib --name my-test-lib --yes
 ```
 
 ---

@@ -1,5 +1,5 @@
 import * as Effect from 'effect/Effect'
-import { TemplateError } from '../types'
+import { TemplateError } from '../types.js'
 
 /**
  * Process template string by replacing {{variableName}} with values

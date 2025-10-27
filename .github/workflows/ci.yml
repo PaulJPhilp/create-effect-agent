@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install pnpm
+      run: npm install -g pnpm@9
+    - name: Install dependencies
+      run: pnpm install
+    - name: Build create-effect-agent
+      run: pnpm build
+    - name: Generate project
+      run: node packages/create-effect-agent/dist/index.js generate ./out --yes --no-git
+    - name: Install generated project dependencies
+      working-directory: ./out
+      run: pnpm install
+    - name: Typecheck generated project
+      working-directory: ./out
+      run: pnpm exec tsc -p tsconfig.json --noEmit
+    - name: Build generated project
+      working-directory: ./out
+      run: pnpm build
+    - name: Test generated project
+      working-directory: ./out
+      run: pnpm exec vitest run
+    - name: Capture project tree
+      run: find . -maxdepth 3 -print > tree.txt
+    - name: Capture logs
+      run: |
+        echo "--- build logs ---" > logs.txt
+        tail -n 100 .turbo/turbo-build.log >> logs.txt
+        echo "--- test logs ---" >> logs.txt
+        tail -n 100 .turbo/turbo-test.log >> logs.txt
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ci-artifacts-${{ matrix.node-version }}
+        path: |
+          tree.txt
+          logs.txt

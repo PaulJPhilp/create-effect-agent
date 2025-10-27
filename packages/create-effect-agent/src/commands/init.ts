@@ -1,15 +1,15 @@
-import { TUIError, TUIHandler } from 'effect-cli-tui'
+import * as TUI from 'effect-cli-tui'
 import * as Effect from 'effect/Effect'
 import {
-    ECOSYSTEM_LIBRARIES,
-    RESERVED_NAMES
-} from '../constants'
-import type { CLIConfig } from '../types'
-import { ValidateError } from '../types'
+ECOSYSTEM_LIBRARIES,
+RESERVED_NAMES
+} from '../constants.js'
+import type { CLIConfig } from '../types.js'
+import { ValidateError } from '../types.js'
 
-export const initProject: Effect.Effect<CLIConfig, ValidateError | TUIError> =
+export const initProject: Effect.Effect<CLIConfig, ValidateError | TUI.TUIError> =
     Effect.gen(function* (_) {
-        const tui = new TUIHandler()
+        const tui = new TUI.TUIHandler()
 
         // Collect project name
         const projectName = yield* _(

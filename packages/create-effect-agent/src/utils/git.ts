@@ -1,6 +1,6 @@
 import { spawn } from 'child_process'
 import * as Effect from 'effect/Effect'
-import { GitError } from '../types'
+import { GitError } from '../types.js'
 
 /**
  * Initialize a git repository

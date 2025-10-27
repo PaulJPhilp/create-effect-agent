@@ -1,7 +1,7 @@
-import { TUIHandler } from 'effect-cli-tui'
+import * as TUI from 'effect-cli-tui'
 import * as Effect from 'effect/Effect'
-import type { CLIConfig } from '../types'
-import { GeneratedProject, GenerateError } from '../types'
+import type { CLIConfig } from '../types.js'
+import { GeneratedProject, GenerateError } from '../types.js'
 
 /**
  * generateProject: Orchestrates the complete project generation workflow
@@ -23,7 +23,7 @@ export const generateProject = (
     config: CLIConfig
 ): Effect.Effect<GeneratedProject, GenerateError> =>
     Effect.gen(function* (_) {
-        const tui = new TUIHandler()
+        const tui = new TUI.TUIHandler()
 
         // Log start
         yield* _(

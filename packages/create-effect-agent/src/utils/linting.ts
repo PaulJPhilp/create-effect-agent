@@ -1,6 +1,6 @@
 import { spawn } from 'child_process'
 import * as Effect from 'effect/Effect'
-import { LintingError } from '../types'
+import { LintingError } from '../types.js'
 
 export interface UltraciteOptions {
     check?: boolean

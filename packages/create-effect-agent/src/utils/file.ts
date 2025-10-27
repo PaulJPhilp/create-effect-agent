@@ -1,7 +1,7 @@
 import * as Effect from 'effect/Effect'
 import * as fs from 'fs/promises'
 import * as path from 'path'
-import { FileError } from '../types'
+import { FileError } from '../types.js'
 
 /**
  * Create a directory and all parent directories recursively
