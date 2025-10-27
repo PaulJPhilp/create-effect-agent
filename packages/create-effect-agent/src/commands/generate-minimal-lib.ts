@@ -134,8 +134,7 @@ export const generateMinimalLib = (
                 forceConsistentCasingInFileNames: true,
                 resolveJsonModule: true,
                 isolatedModules: true,
-                verbatimModuleSyntax: true,
-                types: ['vitest/globals']
+                verbatimModuleSyntax: true
             },
             include: ['src/**/*', 'test/**/*'],
             exclude: ['node_modules', 'dist']
