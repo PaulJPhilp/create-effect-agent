@@ -41,13 +41,13 @@ jobs:
       run: pnpm exec vitest run || true
     - name: Capture project tree
       run: find . -maxdepth 3 -print > tree.txt
-          - name: Capture logs
-            working-directory: ./out
-            run: |
-              echo "--- build logs ---" > logs.txt
-              tail -n 100 .turbo/turbo-build.log >> logs.txt
-              echo "--- test logs ---" >> logs.txt
-              tail -n 100 .turbo/turbo-test.log >> logs.txt    - name: Upload artifacts
+    - name: Capture logs
+      working-directory: ./out
+      run: |
+        echo "--- build logs ---" > logs.txt
+        tail -n 100 .turbo/turbo-build.log >> logs.txt
+        echo "--- test logs ---" >> logs.txt
+        tail -n 100 .turbo/turbo-test.log >> logs.txt    - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: ci-artifacts-${{ matrix.node-version }}
