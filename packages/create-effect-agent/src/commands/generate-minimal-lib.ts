@@ -98,12 +98,12 @@ export const generateMinimalLib = (
             author: '',
             license: 'MIT',
             dependencies: {
-                effect: '^3.18.0'
+                effect: '^3.18.0',
+                vitest: '^1.0.0'
             },
             devDependencies: {
                 '@types/node': '^20.0.0',
                 typescript: '^5.9.0',
-                vitest: '^1.0.0',
                 prettier: '^3.0.0'
             }
         }
