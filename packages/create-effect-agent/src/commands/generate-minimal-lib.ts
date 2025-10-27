@@ -98,12 +98,12 @@ export const generateMinimalLib = (
             author: '',
             license: 'MIT',
             dependencies: {
-                effect: '^3.18.0',
-                vitest: '^1.0.0'
+                effect: '^3.18.0'
             },
             devDependencies: {
                 '@types/node': '^20.0.0',
                 typescript: '^5.9.0',
+                vitest: '^1.0.0',
                 prettier: '^3.0.0'
             }
         }
@@ -134,7 +134,8 @@ export const generateMinimalLib = (
                 forceConsistentCasingInFileNames: true,
                 resolveJsonModule: true,
                 isolatedModules: true,
-                verbatimModuleSyntax: true
+                verbatimModuleSyntax: true,
+                types: ['vitest/globals']
             },
             include: ['src/**/*', 'test/**/*'],
             exclude: ['node_modules', 'dist']
