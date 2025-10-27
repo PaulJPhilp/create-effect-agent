@@ -24,7 +24,7 @@
     },
     "dependencies": {
         "effect": "^3.18.0",
-        "effect-cli-tui": "workspace:*"
+        "effect-cli-tui": "^0.5.0"
     },
     "devDependencies": {
         "@types/node": "^20.0.0",
