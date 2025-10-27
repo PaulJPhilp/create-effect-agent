@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18, 20, 22]
+        template: [basic, supermemory]
 
     steps:
     - uses: actions/checkout@v3
@@ -24,7 +25,7 @@ jobs:
     - name: Build create-effect-agent
       run: pnpm build
     - name: Generate project
-      run: node packages/create-effect-agent/dist/index.js generate ./out --yes --no-git
+      run: node packages/create-effect-agent/dist/index.js generate ./out --yes --no-git --template ${{ matrix.template }}
     - name: Install generated project dependencies
       working-directory: ./out
       run: pnpm install --ignore-workspace
@@ -38,6 +39,7 @@ jobs:
       working-directory: ./out
       run: pnpm exec vitest run || true
     - name: Capture project tree
+      working-directory: ./out
       run: find . -maxdepth 3 -print > tree.txt
     - name: Capture logs
       working-directory: ./out
@@ -45,10 +47,11 @@ jobs:
         echo "--- build logs ---" > logs.txt
         tail -n 100 .turbo/turbo-build.log >> logs.txt
         echo "--- test logs ---" >> logs.txt
-        tail -n 100 .turbo/turbo-test.log >> logs.txt    - name: Upload artifacts
+        tail -n 100 .turbo/turbo-test.log >> logs.txt
+    - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: ci-artifacts-${{ matrix.node-version }}
+        name: ci-artifacts-${{ matrix.node-version }}-${{ matrix.template }}
         path: |
-          tree.txt
-          logs.txt
+          ./out/tree.txt
+          ./out/logs.txt
