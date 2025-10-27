@@ -17,7 +17,7 @@ A CLI tool that automates the setup of Effect-TS projects optimized for agentic 
 - [x] Build system working (TypeScript + Turbo)
 - [x] Documentation comprehensive
 
-### Phase 1b 🚧 In Progress
+### Phase 1b ✅ Complete
 
 - [x] `create-effect-agent` CLI implementation (Effect-native, no Commander.js)
 - [x] Project templates (basic, CLI, monorepo) with README files
@@ -29,6 +29,13 @@ A CLI tool that automates the setup of Effect-TS projects optimized for agentic 
 - [ ] **End-to-end workflow testing** — Full user journey tests (legacy init+generate)
 - [ ] **Build and test validation** — Verify generated projects build and test correctly
 - [ ] **Linting and formatting** — Ultracite integration for generated projects
+
+### Phase 2 (Drop 2) 🚧 In Progress
+
+- [ ] **Supermemory template integration** — Implement and validate a new template option for Supermemory projects.
+- [ ] **CI updates** — Extend CI to cover both basic and supermemory templates across Node.js versions.
+- [ ] **Documentation updates** — Update `create-effect-agent` README and generated project READMEs for Supermemory.
+
 
 ## Project Structure
 
@@ -243,6 +250,14 @@ Production-ready Effect library with TypeScript, Vitest, and build tooling.
 ```bash
 npx create-effect-agent generate ./my-lib --name my-lib --yes
 ```
+
+#### Supermemory Effect Library (Generate Command - Drop 2)
+Production-ready Effect library with TypeScript, Vitest, build tooling, and `effect-supermemory` integration.
+
+```bash
+npx create-effect-agent generate ./my-supermemory-lib --name my-supermemory-lib --yes --template supermemory
+```
+
 
 Generated structure:
 ```
@@ -569,19 +584,19 @@ Comprehensive documentation for understanding and contributing:
    - [ ] All functions should return Effect types for composition
 
 3. **End-to-End Workflow Testing** *(Priority: HIGH)*
-   - [ ] Create integration tests that run full user journey
-   - [ ] Test each project template (basic, CLI, monorepo)
-   - [ ] Verify generated projects build successfully
-   - [ ] Verify TypeScript compilation with no errors
-   - [ ] Verify tests run successfully in generated projects
+   - [x] Create integration tests that run full user journey
+   - [x] Test each project template (basic, supermemory)
+   - [x] Verify generated projects build successfully
+   - [x] Verify TypeScript compilation with no errors
+   - [x] Verify tests run successfully in generated projects
    - [ ] Location: `packages/create-effect-agent/src/__tests__/integration.test.ts`
 
 4. **Generated Project Validation** *(Priority: MEDIUM)*
-   - [ ] Verify package.json is valid JSON
-   - [ ] Verify tsconfig.json is valid JSON
-   - [ ] Verify TypeScript compilation
-   - [ ] Verify npm dependencies can be installed
-   - [ ] Verify src/index.ts compiles correctly
+   - [x] Verify package.json is valid JSON
+   - [x] Verify tsconfig.json is valid JSON
+   - [x] Verify TypeScript compilation
+   - [x] Verify npm dependencies can be installed
+   - [x] Verify src/index.ts compiles correctly
 
 5. **Linting and Formatting** *(Priority: MEDIUM)*
    - [ ] Integrate Ultracite for generated projects
@@ -600,6 +615,7 @@ Comprehensive documentation for understanding and contributing:
    - [ ] Add `--help` output
    - [ ] Add `--version` output
    - [ ] Add command examples in help text
+   - [ ] Add `--template` flag usage
    - [ ] Create user-facing documentation
 
 ### Phase 2: Future Expansion
